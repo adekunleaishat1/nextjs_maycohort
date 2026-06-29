@@ -2,6 +2,8 @@
 import { books } from "./data";
 import type { Book } from "./data";
 import { bookmodel } from "../database/model/book";
+import type { signupform } from "@/app/(auth)/signup";
+import { usermodel } from "../database/model/user";
 
 
  export const resolvers = {
@@ -28,6 +30,7 @@ import { bookmodel } from "../database/model/book";
        return newbook
      }
     },
+
     deleteBook:async(_:unknown, {id}:{id:string})=>{
      try {
        const deletedBook = await bookmodel.findByIdAndDelete(id)
@@ -38,7 +41,24 @@ import { bookmodel } from "../database/model/book";
          throw new Error(error.message)
       }
      }
-    }
+    },
+     adduser: async (_:unknown, input:signupform )=>{
+       try {
+         const {username , email, password} = input
+         if (!username || !email || !password) {
+           throw new Error("All field are mandatory") 
+         }
+       const newUser =  await usermodel.create(input)
+          if (newUser) {
+            return newUser
+          }
+       } catch (error) {
+         if (error instanceof Error) {
+             throw new Error(error.message) 
+         }
+        
+       }
+     }
    }
 
 }

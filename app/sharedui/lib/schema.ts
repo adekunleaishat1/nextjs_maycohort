@@ -6,11 +6,23 @@ export const typeDefs = `
     author: String!
     year: Int!
   }
-  
+  type User {
+    id:ID!
+    username:String!
+    email:String!
+    password:String!
+  }
+
   input BookInput {
     title: String!
     author: String!
     year: Int!
+  }
+
+  input userInput{
+   username:String!
+   email:String!
+   password:String!
   }
 
   type Query {
@@ -22,5 +34,6 @@ export const typeDefs = `
     addBook(input:BookInput):Book
     editBook(input:BookInput):Book
     deleteBook(id:ID):Book
+    adduser(input:userInput):User
    }
 `
