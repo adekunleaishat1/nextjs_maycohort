@@ -5,3 +5,8 @@ export type Post = {
   title: string
   body:string
 }
+
+export type Login = {
+  email: string
+  password:string
+}

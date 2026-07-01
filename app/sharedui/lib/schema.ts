@@ -24,6 +24,12 @@ export const typeDefs = `
    email:String!
    password:String!
   }
+  
+  input loginInput{
+   email:String!
+   password:String!
+  }
+
 
   type Query {
    book:[Book!]
@@ -34,6 +40,7 @@ export const typeDefs = `
     addBook(input:BookInput):Book
     editBook(input:BookInput):Book
     deleteBook(id:ID):Book
-    adduser(input:userInput):User
+    adduser(input:userInput!):User
+    loginuser(input:loginInput!):User
    }
 `
