@@ -6,6 +6,23 @@ export const typeDefs = `
     author: String!
     year: Int!
   }
+  type author {
+     id:ID!
+    username:String
+    email:String
+    password:String
+  }
+
+  union allauthorresult = String | author
+
+  type Blog {
+    id: ID!
+    title: String!
+    content: String!
+    category: String!
+    author:String
+  }
+
   type User {
     id:ID!
     username:String!
@@ -29,11 +46,18 @@ export const typeDefs = `
    email:String!
    password:String!
   }
+  input blogInput {
+    title: String!
+    content: String!
+    category: String!
+    author:String!
+   }
 
 
   type Query {
    book:[Book!]
    onebook(id:ID!):Book
+   getallblog(id:ID):[Blog]
   }
    
    type Mutation{
@@ -42,5 +66,6 @@ export const typeDefs = `
     deleteBook(id:ID):Book
     adduser(input:userInput!):User
     loginuser(input:loginInput!):User
+    addBlog(input:blogInput):Blog
    }
 `

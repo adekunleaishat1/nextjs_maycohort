@@ -10,3 +10,10 @@ export type Login = {
   email: string
   password:string
 }
+
+export type Blog = {
+  title: string
+  content: string
+  category: string
+  author:string
+}

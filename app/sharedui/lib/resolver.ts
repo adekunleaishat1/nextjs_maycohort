@@ -5,7 +5,9 @@ import { bookmodel } from "../database/model/book";
 import type { signupform } from "@/app/(auth)/signup";
 import { usermodel } from "../database/model/user";
 import { hashPassword, verifypassword } from "./auth";
-import type { Login } from "@/app/types/post";
+import type { Login  , Blog} from "@/app/types/post";
+import blogmodel from "../database/model/blog";
+import { assert } from "console";
 
 
  export const resolvers = {
@@ -18,6 +20,13 @@ import type { Login } from "@/app/types/post";
         const onebook =   await bookmodel.findById(id)
          return onebook
       },
+      getallblog:async(_:unknown,{id}:{id:string})=>{
+        if(!id){
+           throw new Error("Invalid Id")
+        }
+       const allblog =  await blogmodel.find({author:id})
+       return allblog
+      }
 
    },
    Mutation:{
@@ -87,7 +96,24 @@ import type { Login } from "@/app/types/post";
              throw new Error(error.message) 
          }
        }
+     },
+     addBlog:async(_:unknown,{input}:{input:Blog} )=>{
+      try {
+         const {title, content, author, category} = input
+        if (!title || !content || !author || !category) {
+           throw new Error("All field are mandatory") 
+         }
+       const newblog = await blogmodel.create(input)
+       if (newblog) {
+        return newblog
+       }
+      } catch (error) {
+         if (error instanceof Error) {
+             throw new Error(error.message) 
+         }
+      }
      }
+
    }
 
 }
