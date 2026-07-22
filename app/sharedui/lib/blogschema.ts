@@ -43,7 +43,7 @@ type Book {
   type Query {
    book:[Book!]
    onebook(id:ID!):Book
-   getallblog(id:ID):[Blog]
+   getallblog(id:ID!,page:Int!,limit:Int!):[Blog]
   }
    
    type Mutation{

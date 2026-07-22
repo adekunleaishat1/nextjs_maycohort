@@ -1,8 +1,9 @@
 import { books } from "./data";
 import type { Book } from "./data";
 import { bookmodel } from "../database/model/book";
-import type { Blog} from "@/app/types/post";
+import type {Blog} from "@/app/types/post";
 import blogmodel from "../database/model/blog";
+import { usermodel } from "../database/model/user";
 
 
 
@@ -16,11 +17,15 @@ export const blogresolver = {
         const onebook =   await bookmodel.findById(id)
          return onebook
       },
-      getallblog:async(_:unknown,{id}:{id:string})=>{
+      getallblog:async(_:unknown,{id,page,limit}:{id:string,page:number, limit:number})=>{
         if(!id){
            throw new Error("Invalid Id")
         }
+      //   blogmodel.countDocuments()
+        const skip = (page - 1) * limit
        const allblog =  await blogmodel.find({author:id})
+       .skip(skip)
+       .limit(limit)
        return allblog
       }
 
@@ -55,7 +60,11 @@ export const blogresolver = {
         if (!title || !content || !author || !category) {
            throw new Error("All field are mandatory") 
          }
-       const newblog = await blogmodel.create(input)
+       const authordetail =  await usermodel.findOne({username:author})
+       const newblog = await blogmodel.create({
+         ...input,
+         author:authordetail._id
+       })
        if (newblog) {
         return newblog
        }
